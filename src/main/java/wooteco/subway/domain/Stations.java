@@ -5,18 +5,26 @@ import java.util.List;
 
 public class Stations {
 
-    private final List<Long> stations = new LinkedList<>();
+    final List<Long> stations = new LinkedList<>();
 
     public Stations(Section section) {
         this.stations.add(section.getUpStationId());
         this.stations.add(section.getDownStationId());
     }
 
-    public boolean isUpStationId(Long id) {
-        return getUpStationId().equals(id);
+    public boolean isUpDestinationId(Long id) {
+        return getUpDestinationId().equals(id);
     }
 
-    private Long getUpStationId() {
+    public boolean isDownDestinationId(Long id) {
+        return getDownDestinationId().equals(id);
+    }
+
+    private Long getDownDestinationId() {
+        return stations.get(stations.size() - 1);
+    }
+
+    private Long getUpDestinationId() {
         return stations.get(0);
     }
 
@@ -25,10 +33,18 @@ public class Stations {
         if (isUpDestination(section)) {
             stations.add(0, section.getUpStationId());
         }
+
+        if (isDownDestination(section)) {
+            stations.add(stations.size(), section.getDownStationId());
+        }
+    }
+
+    private boolean isDownDestination(Section section) {
+        return isDownDestinationId(section.getUpStationId());
     }
 
     private boolean isUpDestination(Section section) {
-        return isUpStationId(section.getDownStationId());
+        return isUpDestinationId(section.getDownStationId());
     }
 
     private void checkAddable(Section section) {
