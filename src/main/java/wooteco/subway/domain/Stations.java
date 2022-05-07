@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Stations {
 
-    final List<Long> stations = new LinkedList<>();
+    private final List<Long> stations = new LinkedList<>();
 
     public Stations(Section section) {
         this.stations.add(section.getUpStationId());
@@ -37,6 +37,16 @@ public class Stations {
         if (isDownDestination(section)) {
             stations.add(stations.size(), section.getDownStationId());
         }
+
+        Long StationId = stations.stream()
+            .filter(id -> id.equals(section.getUpStationId()) || id.equals(section.getDownStationId()))
+            .findFirst()
+            .orElse(0L);
+
+        if (section.isUpStationId(StationId)) {
+            stations.add(stations.indexOf(StationId), section.getOppositeId(StationId));
+        }
+        stations.add(stations.indexOf(StationId) - 1, section.getOppositeId(StationId));
     }
 
     private boolean isDownDestination(Section section) {
@@ -59,5 +69,9 @@ public class Stations {
         if (count == 2) {
             throw new IllegalArgumentException("두 역이 모두 노선에 포함되어 있습니다.");
         }
+    }
+
+    public List<Long> getStations() {
+        return List.copyOf(stations);
     }
 }

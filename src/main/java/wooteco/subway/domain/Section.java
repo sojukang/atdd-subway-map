@@ -27,4 +27,15 @@ public class Section {
     public Long getDownStationId() {
         return downStationId;
     }
+
+    public Long getOppositeId(Long id) {
+        if (upStationId.equals(id)) {
+            return downStationId;
+        }
+        return upStationId;
+    }
+
+    public boolean isUpStationId(Long id) {
+        return id.equals(upStationId);
+    }
 }

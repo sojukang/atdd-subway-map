@@ -36,4 +36,19 @@ public class StationsTest {
         //then
         assertThat(stations.isDownDestinationId(3L)).isTrue();
     }
+
+    @Test
+    @DisplayName("두 역 사이에 새로운 역 등록을 검증한다.")
+    void addBetweenStations() {
+        //given
+        Section oldSection = new Section(1L, 2L, 5);
+        Stations stations = new Stations(oldSection);
+
+        //when
+        Section newSection = new Section(1L, 3L, 5);
+        stations.add(newSection);
+
+        //then
+        assertThat(stations.getStations().get(1)).isEqualTo(3L);
+    }
 }
