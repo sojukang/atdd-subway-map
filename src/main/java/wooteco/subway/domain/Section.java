@@ -19,4 +19,12 @@ public class Section {
         Objects.requireNonNull(upStationId, "상행선 Id 가 Null 입니다.");
         Objects.requireNonNull(downStationId, "하행선 Id 가 Null 입니다.");
     }
+
+    public Long getUpStationId() {
+        return upStationId;
+    }
+
+    public Long getDownStationId() {
+        return downStationId;
+    }
 }
