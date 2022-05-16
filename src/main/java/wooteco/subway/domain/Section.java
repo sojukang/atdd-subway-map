@@ -24,7 +24,7 @@ public class Section {
     }
 
     private void validateDistance(int distance) {
-        if (distance <= MIN_DISTANCE) {
+        if (distance < MIN_DISTANCE) {
             throw new IllegalArgumentException("거리는 0보다 커야합니다.");
         }
     }
@@ -37,7 +37,7 @@ public class Section {
         return upStation.equals(station) || downStation.equals(station);
     }
 
-    public boolean isOverlap(Section section) {
+    public boolean isOverlapped(Section section) {
         return contains(section.downStation) || contains(section.upStation);
     }
 
