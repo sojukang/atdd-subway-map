@@ -110,9 +110,9 @@ public class Sections {
     }
 
     private void validateAddable(Section section) {
-        List<Section> foundSections = findSectionsOverlapped(section);
+        List<Section> sectionsOverlapped = findSectionsOverlapped(section);
 
-        if (isInvalid(section, foundSections)) {
+        if (isInvalid(section, sectionsOverlapped)) {
             throw new IllegalArgumentException("이미 포함된 두 역을 가진 Section 을 추가할 수 없습니다.");
         }
     }
@@ -123,21 +123,21 @@ public class Sections {
             .collect(Collectors.toList());
     }
 
-    private boolean isInvalid(Section section, List<Section> foundSections) {
-        return hasAnySectionWithSameStations(foundSections, section)
-            || isInvalidCountInMiddle(foundSections)
+    private boolean isInvalid(Section section, List<Section> sectionsOverlapped) {
+        return hasAnySectionWithSameStations(sectionsOverlapped, section)
+            || isInvalidCountInMiddle(sectionsOverlapped)
             || isSameWithDestinations(section);
     }
 
-    private boolean hasAnySectionWithSameStations(List<Section> foundSections, Section section) {
-        return foundSections.stream()
+    private boolean hasAnySectionWithSameStations(List<Section> sections, Section section) {
+        return sections.stream()
             .anyMatch(it -> it.hasSameStations(section));
     }
 
-    private boolean isInvalidCountInMiddle(List<Section> foundSections) {
-        int foundSectionCount = foundSections.size();
-        return foundSectionCount != OVERLAP_COUNT_ADD_DESTINATION
-            && foundSectionCount != OVERLAP_COUNT_ADD_MIDDLE;
+    private boolean isInvalidCountInMiddle(List<Section> sectionsOverlapped) {
+        int countOverlappedSections = sectionsOverlapped.size();
+        return countOverlappedSections != OVERLAP_COUNT_ADD_DESTINATION
+            && countOverlappedSections != OVERLAP_COUNT_ADD_MIDDLE;
     }
 
     private boolean isSameWithDestinations(Section section) {
