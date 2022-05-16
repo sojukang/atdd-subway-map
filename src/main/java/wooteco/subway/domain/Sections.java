@@ -119,7 +119,7 @@ public class Sections {
 
     private List<Section> findSectionsOverlapped(Section newSection) {
         return values.stream()
-            .filter(section -> section.isOverlap(newSection))
+            .filter(section -> section.isOverlapped(newSection))
             .collect(Collectors.toList());
     }
 
