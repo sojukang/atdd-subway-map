@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Section {
 
-    private static final int MIN_DISTANCE = 0;
+    private static final int MIN_DISTANCE = 1;
 
     private final Long id;
     private final Station upStation;
