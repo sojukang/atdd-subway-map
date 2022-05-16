@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataDuplicationException;
@@ -23,11 +24,13 @@ class LineServiceTest {
 
     @BeforeEach
     void setUp() {
-        StationService stationService = new StationService(new FakeStationDao());
+        StationService stationService = new StationService(new FakeStationRepository(new FakeStationDao()));
         stationService.createStation(new Station("선릉"));
         stationService.createStation(new Station("강남"));
-        lineService = new LineService(new FakeLineDao(),
-            new SectionService(new FakeSectionDao(), stationService), stationService);
+        lineService = new LineService(new FakeLineRepository(new FakeLineDao()),
+            new SectionService(stationService,
+                new FakeSectionRepository(new FakeSectionDao(), new FakeStationRepository(new FakeStationDao()))),
+            stationService);
     }
 
     @Test
@@ -35,12 +38,14 @@ class LineServiceTest {
     void create() {
         //given
         LineDto lineDto = new LineDto("7호선", "khaki", 1L, 2L, 5);
+        LineEntity lineEntity = lineDto.toLineEntity();
 
         //when
         Line actual = lineService.createLine(lineDto);
 
         //then
-        assertThat(isSameNameAndColor(actual, lineDto.toLine())).isTrue();
+        assertThat(isSameNameAndColor(actual,
+            new Line(lineEntity.getId(), lineEntity.getName(), lineEntity.getColor()))).isTrue();
     }
 
     @ParameterizedTest
@@ -122,7 +127,7 @@ class LineServiceTest {
 
         //when
         Line expected = new Line(createdLine.getId(), "4호선", "khaki");
-        lineService.update(expected);
+        lineService.update(new LineEntity(expected.getId(), expected.getName(), expected.getColor()));
         Line actual = lineService.findById(createdLine.getId());
 
         //then
@@ -138,7 +143,8 @@ class LineServiceTest {
         Line duplicatedLine = new Line(line.getId(), "2호선", line.getColor());
 
         //then
-        assertThatThrownBy(() -> lineService.update(duplicatedLine))
+        assertThatThrownBy(() -> lineService.update(new LineEntity(duplicatedLine.getId(), duplicatedLine.getName(),
+            duplicatedLine.getColor())))
             .isInstanceOf(DataDuplicationException.class)
             .hasMessage("이미 등록된 노선입니다.");
     }

@@ -1,22 +1,29 @@
 package wooteco.subway.ui.request;
 
-import wooteco.subway.domain.Line;
+import static wooteco.subway.domain.Line.*;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import wooteco.subway.service.dto.LineDto;
 
 public class LineRequest {
 
+    @Min(value = 1)
     private int distance;
+
+    @NotNull(message = NAME_REQUIRE_NOT_NULL)
+    @Size(min = 1, max = 30, message = NAME_RANGE_VALIDATION)
     private String name;
+
+    @NotNull(message = COLOR_REQUIRE_NOT_NULL)
+    @Size(min = 1, max = 20, message = COLOR_RANGE_VALIDATION)
     private String color;
     private Long upStationId;
     private Long downStationId;
 
     public LineRequest() {
-    }
-
-    public LineRequest(String name, String color) {
-        this.name = name;
-        this.color = color;
     }
 
     public LineRequest(String name, String color, Long upStationId, Long downStationId, int distance) {
@@ -25,10 +32,6 @@ public class LineRequest {
         this.upStationId = upStationId;
         this.downStationId = downStationId;
         this.distance = distance;
-    }
-
-    public Line toLine(Long id) {
-        return new Line(id, name, color);
     }
 
     public LineDto toLineDto() {

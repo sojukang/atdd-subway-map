@@ -19,7 +19,7 @@ class StationServiceTest {
 
     @BeforeEach
     void setUp() {
-        stationService = new StationService(new FakeStationDao());
+        stationService = new StationService(new FakeStationRepository(new FakeStationDao()));
     }
 
     @Test

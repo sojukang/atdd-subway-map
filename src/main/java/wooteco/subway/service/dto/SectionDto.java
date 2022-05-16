@@ -1,6 +1,6 @@
 package wooteco.subway.service.dto;
 
-import wooteco.subway.domain.SectionEntity;
+import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.ui.request.SectionRequest;
 
 public class SectionDto {

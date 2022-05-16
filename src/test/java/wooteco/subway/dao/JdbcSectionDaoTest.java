@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import wooteco.subway.domain.Line;
-import wooteco.subway.domain.SectionEntity;
+import wooteco.subway.dao.entity.LineEntity;
+import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.domain.Station;
 
 @JdbcTest
@@ -36,7 +36,7 @@ class JdbcSectionDaoTest {
         stationIdA = stationDao.save(new Station("강남역")).getId();
         stationIdB = stationDao.save(new Station("선릉역")).getId();
 
-        savedLineId = lineDao.save(new Line("2호선", "green")).getId();
+        savedLineId = lineDao.save(new LineEntity("2호선", "green")).getId();
     }
 
     @Test

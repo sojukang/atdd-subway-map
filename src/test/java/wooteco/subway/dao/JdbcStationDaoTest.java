@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import wooteco.subway.domain.Line;
-import wooteco.subway.domain.SectionEntity;
+import wooteco.subway.dao.entity.LineEntity;
+import wooteco.subway.dao.entity.SectionEntity;
+import wooteco.subway.dao.entity.StationEntity;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataReferenceViolationException;
 
@@ -37,7 +38,7 @@ class JdbcStationDaoTest {
         Station station = new Station("lala");
 
         //when
-        Station actual = stationDao.save(station);
+        StationEntity actual = stationDao.save(station);
 
         //then
         assertThat(actual.getName()).isEqualTo(station.getName());
@@ -53,7 +54,7 @@ class JdbcStationDaoTest {
         stationDao.save(station2);
 
         //when
-        List<Station> actual = stationDao.findAll();
+        List<StationEntity> actual = stationDao.findAll();
 
         //then
         assertAll(
@@ -70,7 +71,7 @@ class JdbcStationDaoTest {
         stationDao.save(new Station(name));
 
         //when
-        Station actual = stationDao.findByName(name).get();
+        StationEntity actual = stationDao.findByName(name).get();
 
         //then
         assertThat(actual.getName()).isEqualTo(name);
@@ -84,7 +85,7 @@ class JdbcStationDaoTest {
         stationDao.save(new Station(name));
 
         //when
-        Optional<Station> actual = stationDao.findByName("sojukang");
+        Optional<StationEntity> actual = stationDao.findByName("sojukang");
 
         //then
         assertThat(actual).isEmpty();
@@ -94,10 +95,10 @@ class JdbcStationDaoTest {
     @DisplayName("id 로 station 을 조회한다.")
     void findById() {
         //given
-        Station station = stationDao.save(new Station("lala"));
+        StationEntity station = stationDao.save(new Station("lala"));
 
         //when
-        Station actual = stationDao.findById(station.getId()).get();
+        StationEntity actual = stationDao.findById(station.getId()).get();
 
         //then
         assertThat(actual.getName()).isEqualTo(station.getName());
@@ -107,11 +108,11 @@ class JdbcStationDaoTest {
     @DisplayName("두 id 로 두 station 을 조회한다.")
     void findStationsByIds() {
         //given
-        Station stationA = stationDao.save(new Station("lala"));
-        Station stationB = stationDao.save(new Station("sojukang"));
+        StationEntity stationA = stationDao.save(new Station("lala"));
+        StationEntity stationB = stationDao.save(new Station("sojukang"));
 
         //when
-        List<Station> actual = stationDao.findStationsByIds(stationA.getId(), stationB.getId());
+        List<StationEntity> actual = stationDao.findStationsByIds(stationA.getId(), stationB.getId());
 
         //then
         assertAll(
@@ -125,7 +126,7 @@ class JdbcStationDaoTest {
     void deleteById() {
         //given
         String name = "lala";
-        Station savedStation = stationDao.save(new Station(name));
+        StationEntity savedStation = stationDao.save(new Station(name));
 
         //when
         stationDao.deleteById(savedStation.getId());
@@ -151,7 +152,7 @@ class JdbcStationDaoTest {
         Long stationIdA = stationDao.save(new Station("강남역")).getId();
         Long stationIdB = stationDao.save(new Station("선릉역")).getId();
 
-        Long savedLineId = new JdbcLineDao(jdbcTemplate).save(new Line("2호선", "green")).getId();
+        Long savedLineId = new JdbcLineDao(jdbcTemplate).save(new LineEntity("2호선", "green")).getId();
 
         Long stationIdC = stationDao.save(new Station("서초역")).getId();
 

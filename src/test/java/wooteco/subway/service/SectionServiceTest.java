@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import wooteco.subway.dao.SectionDao;
 import wooteco.subway.dao.StationDao;
-import wooteco.subway.domain.SectionEntity;
+import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.domain.Station;
 import wooteco.subway.service.dto.SectionDto;
 
@@ -30,12 +30,13 @@ class SectionServiceTest {
     void setUp() {
         sectionDao = new FakeSectionDao();
         StationDao stationDao = new FakeStationDao();
-
+        StationService stationService = new StationService(new FakeStationRepository(stationDao));
         stationDao.save(선릉역);
         stationDao.save(강남역);
         stationDao.save(서초역);
 
-        sectionService = new SectionService(sectionDao, new StationService(stationDao));
+        sectionService = new SectionService((stationService),
+            new FakeSectionRepository(sectionDao, new FakeStationRepository(stationDao)));
     }
 
     @Test

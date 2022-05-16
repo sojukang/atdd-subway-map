@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import wooteco.subway.dao.entity.StationEntity;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataReferenceViolationException;
 
@@ -27,7 +28,7 @@ public class JdbcStationDao implements StationDao {
     }
 
     @Override
-    public Station save(Station station) {
+    public StationEntity save(Station station) {
         String sql = "insert into station (name) values (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -37,53 +38,53 @@ public class JdbcStationDao implements StationDao {
         }, keyHolder);
 
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        return new Station(id, station.getName());
+        return new StationEntity(id, station.getName());
     }
 
     @Override
-    public Optional<Station> findByName(String name) {
+    public Optional<StationEntity> findByName(String name) {
         String sql = "select * from station where name = ?";
 
         try {
-            Station station = jdbcTemplate.queryForObject(sql,
-                (rs, rowNum) -> createStation(rs), name);
-            return Optional.ofNullable(station);
+            StationEntity stationEntity = jdbcTemplate.queryForObject(sql,
+                (rs, rowNum) -> createEntity(rs), name);
+            return Optional.ofNullable(stationEntity);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    private Station createStation(ResultSet rs) throws SQLException {
-        return new Station(
+    private StationEntity createEntity(ResultSet rs) throws SQLException {
+        return new StationEntity(
             rs.getLong("id"),
             rs.getString("name")
         );
     }
 
     @Override
-    public Optional<Station> findById(Long id) {
+    public Optional<StationEntity> findById(Long id) {
         String sql = "select * from station where id = ?";
 
         try {
-            Station station = jdbcTemplate.queryForObject(sql,
-                (rs, rowNum) -> createStation(rs), id);
-            return Optional.ofNullable(station);
+            StationEntity stationEntity = jdbcTemplate.queryForObject(sql,
+                (rs, rowNum) -> createEntity(rs), id);
+            return Optional.ofNullable(stationEntity);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
     @Override
-    public List<Station> findStationsByIds(Long idA, Long idB) {
+    public List<StationEntity> findStationsByIds(Long idA, Long idB) {
         String sql = "select * from station where id = ? or id = ?";
         return jdbcTemplate.query(sql,
-            (rs, rowNum) -> createStation(rs), idA, idB);
+            (rs, rowNum) -> createEntity(rs), idA, idB);
     }
 
     @Override
-    public List<Station> findAll() {
+    public List<StationEntity> findAll() {
         String sql = "select * from station";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> createStation(rs));
+        return jdbcTemplate.query(sql, (rs, rowNum) -> createEntity(rs));
     }
 
     @Override

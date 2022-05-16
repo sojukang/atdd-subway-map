@@ -19,6 +19,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import wooteco.subway.ui.request.LineRequest;
+import wooteco.subway.ui.request.LineUpdateRequest;
 import wooteco.subway.ui.request.SectionRequest;
 import wooteco.subway.ui.response.LineResponse;
 import wooteco.subway.ui.response.StationResponse;
@@ -177,7 +178,7 @@ class LineAcceptanceTest extends AcceptanceTest {
 
         // when
         String uri = createResponse.header("Location");
-        LineRequest updateRequest = new LineRequest("2호선", "green");
+        LineUpdateRequest updateRequest = new LineUpdateRequest("2호선", "green");
         getExtractablePutResponse(updateRequest, uri);
 
         ExtractableResponse<Response> response = getExtractableGetResponse(uri);
@@ -198,7 +199,7 @@ class LineAcceptanceTest extends AcceptanceTest {
         // when
         long otherId = savedId + 1;
 
-        LineRequest updateRequest = new LineRequest("4호선", "green");
+        LineUpdateRequest updateRequest = new LineUpdateRequest("4호선", "green");
         ExtractableResponse<Response> response = getExtractablePutResponse(updateRequest,
             defaultUri + "/" + otherId);
 

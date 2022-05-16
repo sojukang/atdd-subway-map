@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import wooteco.subway.domain.SectionEntity;
+import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.exception.DataReferenceViolationException;
 
 @Repository

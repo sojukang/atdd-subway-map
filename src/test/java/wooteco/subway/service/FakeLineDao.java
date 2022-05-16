@@ -5,47 +5,53 @@ import java.util.List;
 import java.util.Optional;
 
 import wooteco.subway.dao.LineDao;
+import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
 
 class FakeLineDao implements LineDao {
 
-    private final List<Line> lines = new ArrayList<>();
+    private final List<LineEntity> lines = new ArrayList<>();
     private Long seq = 0L;
 
     @Override
-    public Line save(Line line) {
-        Line persistStation = createNewObject(line);
+    public LineEntity save(LineEntity lineEntity) {
+        LineEntity persistStation = createNewObject(lineEntity);
         lines.add(persistStation);
         return persistStation;
     }
 
-    private Line createNewObject(Line line) {
-        return new Line(++seq, line.getName(), line.getColor());
+    private LineEntity createNewObject(LineEntity lineEntity) {
+        return new LineEntity(++seq, lineEntity.getName(), lineEntity.getColor());
     }
 
     @Override
-    public Optional<Line> findById(Long id) {
-        return lines.stream().filter(line -> line.getId().equals(id)).findFirst();
+    public Optional<LineEntity> findById(Long id) {
+        return lines.stream()
+            .filter(line -> line.getId().equals(id)).findFirst();
     }
 
     @Override
-    public Optional<Line> findByName(String name) {
+    public Optional<LineEntity> findByName(String name) {
         return lines.stream()
             .filter(line -> name.equals(line.getName()))
             .findFirst();
+
     }
 
     @Override
-    public List<Line> findAll() {
-        return List.copyOf(lines);
+    public List<LineEntity> findAll() {
+        return lines;
     }
 
     @Override
-    public void update(Line otherLine) {
+    public void update(LineEntity otherLineEntity) {
         int idx = 0;
-        for (Line line : lines) {
-            if (line.hasSameId(otherLine)) {
-                lines.set(idx, otherLine);
+        for (LineEntity entity : lines) {
+            Line line = new Line(entity.getId(), entity.getName(), entity.getColor());
+            if (line.hasSameId(
+                new Line(otherLineEntity.getId(), otherLineEntity.getName(), otherLineEntity.getColor()))) {
+                lines.set(idx,
+                    new LineEntity(otherLineEntity.getId(), otherLineEntity.getName(), otherLineEntity.getColor()));
                 return;
             }
             idx++;

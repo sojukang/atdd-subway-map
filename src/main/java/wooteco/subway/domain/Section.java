@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Section {
 
+    public static final String DISTANCE_RANGE_VALIDATION = "거리는 0보다 커야합니다.";
+
     private static final int MIN_DISTANCE = 1;
 
     private final Long id;
@@ -25,7 +27,7 @@ public class Section {
 
     private void validateDistance(int distance) {
         if (distance < MIN_DISTANCE) {
-            throw new IllegalArgumentException("거리는 0보다 커야합니다.");
+            throw new IllegalArgumentException(DISTANCE_RANGE_VALIDATION);
         }
     }
 

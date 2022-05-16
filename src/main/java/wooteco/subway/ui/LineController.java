@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import wooteco.subway.service.LineService;
 import wooteco.subway.service.SectionService;
 import wooteco.subway.service.dto.SectionDto;
 import wooteco.subway.ui.request.LineRequest;
+import wooteco.subway.ui.request.LineUpdateRequest;
 import wooteco.subway.ui.request.SectionRequest;
 import wooteco.subway.ui.response.LineResponse;
 
@@ -37,13 +40,14 @@ public class LineController {
     }
 
     @PostMapping
-    public ResponseEntity<LineResponse> createLine(@RequestBody LineRequest lineRequest) {
+    public ResponseEntity<LineResponse> createLine(@RequestBody @Valid LineRequest lineRequest) {
         Line line = lineService.createLine(lineRequest.toLineDto());
         return ResponseEntity.created(URI.create("/lines/" + line.getId())).body(LineResponse.from(line));
     }
 
     @PostMapping("/{id}/sections")
-    public ResponseEntity<Void> createSection(@PathVariable Long id, @RequestBody SectionRequest sectionRequest) {
+    public ResponseEntity<Void> createSection(@PathVariable Long id,
+        @RequestBody @Valid SectionRequest sectionRequest) {
         sectionService.addSectionInLine(SectionDto.of(id, sectionRequest));
         return ResponseEntity.ok().build();
     }
@@ -65,8 +69,9 @@ public class LineController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateLine(@PathVariable Long id, @RequestBody LineRequest lineRequest) {
-        lineService.update(lineRequest.toLine(id));
+    public ResponseEntity<Void> updateLine(@PathVariable Long id,
+        @RequestBody @Valid LineUpdateRequest lineUpdateRequest) {
+        lineService.update(lineUpdateRequest.toLineEntity(id));
         return ResponseEntity.ok().build();
     }
 

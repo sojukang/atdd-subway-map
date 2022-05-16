@@ -1,7 +1,10 @@
 package wooteco.subway.ui;
 
+import java.util.Objects;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,6 +18,13 @@ public class ExceptionAdvice {
     @ExceptionHandler({IllegalArgumentException.class, DataDuplicationException.class})
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception exception) {
         return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException exception) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(
+            Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage()));
     }
 
     @ExceptionHandler(DataNotFoundException.class)

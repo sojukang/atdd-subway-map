@@ -6,6 +6,11 @@ import java.util.Objects;
 
 public class Line {
 
+    public static final String NAME_REQUIRE_NOT_NULL = "이름은 Null 일 수 없습니다.";
+    public static final String COLOR_REQUIRE_NOT_NULL = "색상은 Null 일 수 없습니다.";
+    public static final String NAME_RANGE_VALIDATION = "이름은 1~30 자 이내여야 합니다.";
+    public static final String COLOR_RANGE_VALIDATION = "색상은 1~20 자 이내여야 합니다.";
+
     private static final int MIN_NAME_LENGTH = 1;
     private static final int MIN_COLOR_LENGTH = 1;
     private static final int MAX_NAME_LENGTH = 30;
@@ -38,26 +43,26 @@ public class Line {
     }
 
     private void validateName(String name) {
-        Objects.requireNonNull(name, "이름은 Null 일 수 없습니다.");
+        Objects.requireNonNull(name, NAME_REQUIRE_NOT_NULL);
         validateNameLength(name);
     }
 
     private void validateColor(String color) {
-        Objects.requireNonNull(color, "색상은 Null 일 수 없습니다.");
+        Objects.requireNonNull(color, COLOR_REQUIRE_NOT_NULL);
         validateColorLength(color);
     }
 
     private void validateNameLength(String name) {
         int length = name.length();
         if (length < MIN_NAME_LENGTH || length > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException("이름은 1~30 자 이내여야 합니다.");
+            throw new IllegalArgumentException(NAME_RANGE_VALIDATION);
         }
     }
 
     private void validateColorLength(String color) {
         int length = color.length();
         if (length < MIN_COLOR_LENGTH || length > MAX_COLOR_LENGTH) {
-            throw new IllegalArgumentException("색상은 1~20 자 이내여야 합니다.");
+            throw new IllegalArgumentException(COLOR_RANGE_VALIDATION);
         }
     }
 
