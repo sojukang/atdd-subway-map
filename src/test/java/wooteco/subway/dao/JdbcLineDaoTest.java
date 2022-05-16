@@ -13,7 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.dao.entity.SectionEntity;
-import wooteco.subway.domain.Station;
+import wooteco.subway.service.dto.LineUpdateDto;
+import wooteco.subway.service.dto.StationDto;
 
 @JdbcTest
 class JdbcLineDaoTest {
@@ -102,12 +103,13 @@ class JdbcLineDaoTest {
         LineEntity savedLine = lineDao.save(line);
 
         //when
-        LineEntity updatedLine = new LineEntity(savedLine.getId(), "2호선", "khaki");
+        LineUpdateDto updatedLine = new LineUpdateDto(savedLine.getId(), "2호선", "khaki");
         lineDao.update(updatedLine);
 
         //then
         LineEntity actual = lineDao.findById(savedLine.getId()).get();
-        checkHasSameNameAndColor(actual, updatedLine);
+        checkHasSameNameAndColor(actual,
+            new LineEntity(updatedLine.getId(), updatedLine.getName(), updatedLine.getColor()));
     }
 
     @Test
@@ -143,8 +145,8 @@ class JdbcLineDaoTest {
 
         Long savedLineId = new JdbcLineDao(jdbcTemplate).save(new LineEntity("2호선", "green")).getId();
 
-        Long stationIdA = stationDao.save(new Station("강남역")).getId();
-        Long stationIdB = stationDao.save(new Station("선릉역")).getId();
+        Long stationIdA = stationDao.save(new StationDto("강남역")).getId();
+        Long stationIdB = stationDao.save(new StationDto("선릉역")).getId();
         sectionDao.save(new SectionEntity(savedLineId, stationIdA, stationIdB, 5));
 
         //when

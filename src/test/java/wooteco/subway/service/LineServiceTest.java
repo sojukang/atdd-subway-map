@@ -13,10 +13,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
-import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataDuplicationException;
 import wooteco.subway.exception.DataNotFoundException;
 import wooteco.subway.service.dto.LineDto;
+import wooteco.subway.service.dto.LineUpdateDto;
+import wooteco.subway.service.dto.StationDto;
 
 class LineServiceTest {
 
@@ -25,8 +26,8 @@ class LineServiceTest {
     @BeforeEach
     void setUp() {
         StationService stationService = new StationService(new FakeStationRepository(new FakeStationDao()));
-        stationService.createStation(new Station("선릉"));
-        stationService.createStation(new Station("강남"));
+        stationService.createStation(new StationDto("선릉"));
+        stationService.createStation(new StationDto("강남"));
         lineService = new LineService(new FakeLineRepository(new FakeLineDao()),
             new SectionService(stationService,
                 new FakeSectionRepository(new FakeSectionDao(), new FakeStationRepository(new FakeStationDao()))),
@@ -127,7 +128,7 @@ class LineServiceTest {
 
         //when
         Line expected = new Line(createdLine.getId(), "4호선", "khaki");
-        lineService.update(new LineEntity(expected.getId(), expected.getName(), expected.getColor()));
+        lineService.update(new LineUpdateDto(expected.getId(), expected.getName(), expected.getColor()));
         Line actual = lineService.findById(createdLine.getId());
 
         //then
@@ -143,7 +144,7 @@ class LineServiceTest {
         Line duplicatedLine = new Line(line.getId(), "2호선", line.getColor());
 
         //then
-        assertThatThrownBy(() -> lineService.update(new LineEntity(duplicatedLine.getId(), duplicatedLine.getName(),
+        assertThatThrownBy(() -> lineService.update(new LineUpdateDto(duplicatedLine.getId(), duplicatedLine.getName(),
             duplicatedLine.getColor())))
             .isInstanceOf(DataDuplicationException.class)
             .hasMessage("이미 등록된 노선입니다.");

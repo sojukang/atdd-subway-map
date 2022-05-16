@@ -13,6 +13,7 @@ import wooteco.subway.dao.StationDao;
 import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.domain.Station;
 import wooteco.subway.service.dto.SectionDto;
+import wooteco.subway.service.dto.StationDto;
 
 class SectionServiceTest {
 
@@ -20,9 +21,9 @@ class SectionServiceTest {
     private final Long 선릉역Id = 1L;
     private final Long 강남역Id = 2L;
     private final Long 서초역Id = 3L;
-    private final Station 선릉역 = new Station(선릉역Id, "선릉");
-    private final Station 강남역 = new Station(강남역Id, "강남");
-    private final Station 서초역 = new Station(서초역Id, "서초");
+    private final StationDto 선릉역 = new StationDto(선릉역Id, "선릉");
+    private final StationDto 강남역 = new StationDto(강남역Id, "강남");
+    private final StationDto 서초역 = new StationDto(서초역Id, "서초");
     private SectionDao sectionDao;
     private SectionService sectionService;
 
@@ -63,7 +64,7 @@ class SectionServiceTest {
 
         //then
         List<Station> actual = sectionService.findStationsByLineId(line2Id);
-        List<Station> expected = List.of(선릉역, 강남역, 서초역);
+        List<Station> expected = List.of(선릉역.toStation(), 강남역.toStation(), 서초역.toStation());
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -77,7 +78,7 @@ class SectionServiceTest {
 
         //when
         List<Station> actual = sectionService.findStationsByLineId(line2Id);
-        List<Station> expected = List.of(선릉역, 강남역, 서초역);
+        List<Station> expected = List.of(선릉역.toStation(), 강남역.toStation(), 서초역.toStation());
 
         //then
         assertThat(actual).isEqualTo(expected);
@@ -93,7 +94,7 @@ class SectionServiceTest {
         //when
         sectionService.deleteSectionByStationId(line2Id, 선릉역Id);
         List<Station> actual = sectionService.findStationsByLineId(line2Id);
-        List<Station> expected = List.of(강남역, 서초역);
+        List<Station> expected = List.of(강남역.toStation(), 서초역.toStation());
 
         //then
         assertThat(actual).isEqualTo(expected);

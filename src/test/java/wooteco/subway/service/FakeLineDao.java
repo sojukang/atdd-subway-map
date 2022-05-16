@@ -7,6 +7,7 @@ import java.util.Optional;
 import wooteco.subway.dao.LineDao;
 import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
+import wooteco.subway.service.dto.LineUpdateDto;
 
 class FakeLineDao implements LineDao {
 
@@ -44,7 +45,7 @@ class FakeLineDao implements LineDao {
     }
 
     @Override
-    public void update(LineEntity otherLineEntity) {
+    public void update(LineUpdateDto otherLineEntity) {
         int idx = 0;
         for (LineEntity entity : lines) {
             Line line = new Line(entity.getId(), entity.getName(), entity.getColor());

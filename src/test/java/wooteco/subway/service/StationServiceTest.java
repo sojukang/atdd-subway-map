@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataDuplicationException;
 import wooteco.subway.exception.DataNotFoundException;
+import wooteco.subway.service.dto.StationDto;
 
 class StationServiceTest {
 
@@ -26,7 +27,7 @@ class StationServiceTest {
     @DisplayName("station 을 저장한다.")
     void create() {
         //given
-        Station station = new Station("lala");
+        StationDto station = new StationDto("lala");
 
         //when
         Station actual = stationService.createStation(station);
@@ -39,7 +40,7 @@ class StationServiceTest {
     @DisplayName("중복된 역을 저장할 수 없다.")
     void createDuplicateName() {
         //given
-        Station station = new Station("lala");
+        StationDto station = new StationDto("lala");
         stationService.createStation(station);
 
         //then
@@ -52,8 +53,8 @@ class StationServiceTest {
     @DisplayName("모든 역 목록을 조회한다.")
     void findAll() {
         //given
-        Station station1 = new Station("lala");
-        Station station2 = new Station("sojukang");
+        StationDto station1 = new StationDto("lala");
+        StationDto station2 = new StationDto("sojukang");
         stationService.createStation(station1);
         stationService.createStation(station2);
 
@@ -71,7 +72,7 @@ class StationServiceTest {
     @DisplayName("id 로 역을 조회한다.")
     void findById() {
         //given
-        Station station = new Station("lala");
+        StationDto station = new StationDto("lala");
         Long id = stationService.createStation(station).getId();
 
         //when
@@ -85,7 +86,7 @@ class StationServiceTest {
     @DisplayName("존재하지 않는 id 로 조회할 경우 예외를 던진다.")
     void findByIdNotExist() {
         //given
-        Station station = new Station("lala");
+        StationDto station = new StationDto("lala");
         Long id = stationService.createStation(station).getId();
 
         //then
@@ -98,8 +99,8 @@ class StationServiceTest {
     @DisplayName("두 id 로 두 역을 조회한다.")
     void findBothStationsByIds() {
         //given
-        Station stationA = new Station("lala");
-        Station stationB = new Station("sojukang");
+        StationDto stationA = new StationDto("lala");
+        StationDto stationB = new StationDto("sojukang");
         Long idA = stationService.createStation(stationA).getId();
         Long idB = stationService.createStation(stationB).getId();
 
@@ -117,7 +118,7 @@ class StationServiceTest {
     @DisplayName("역을 삭제한다.")
     void deleteById() {
         //given
-        Station station = new Station("이수");
+        StationDto station = new StationDto("이수");
         Station createdStation = stationService.createStation(station);
         stationService.deleteById(createdStation.getId());
 

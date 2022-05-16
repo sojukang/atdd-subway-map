@@ -5,7 +5,7 @@ import static wooteco.subway.domain.Line.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import wooteco.subway.dao.entity.LineEntity;
+import wooteco.subway.service.dto.LineUpdateDto;
 
 public class LineUpdateRequest {
 
@@ -33,7 +33,7 @@ public class LineUpdateRequest {
         return color;
     }
 
-    public LineEntity toLineEntity(Long id) {
-        return new LineEntity(id, name, color);
+    public LineUpdateDto toLineUpdateDto(Long id) {
+        return new LineUpdateDto(id, name, color);
     }
 }

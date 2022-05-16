@@ -9,6 +9,7 @@ import wooteco.subway.dao.StationRepository;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataDuplicationException;
 import wooteco.subway.exception.DataNotFoundException;
+import wooteco.subway.service.dto.StationDto;
 
 @Service
 public class StationService {
@@ -21,12 +22,12 @@ public class StationService {
         this.stationRepository = stationRepository;
     }
 
-    public Station createStation(Station station) {
-        Optional<Station> foundStation = stationRepository.findByName(station.getName());
+    public Station createStation(StationDto stationDto) {
+        Optional<Station> foundStation = stationRepository.findByName(stationDto.getName());
         if (foundStation.isPresent()) {
             throw new DataDuplicationException("이미 등록된 역입니다.");
         }
-        return stationRepository.save(station);
+        return stationRepository.save(stationDto);
     }
 
     public Station findById(Long id) {

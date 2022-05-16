@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import wooteco.subway.dao.entity.StationEntity;
-import wooteco.subway.domain.Station;
+import wooteco.subway.service.dto.StationDto;
 
 public interface StationDao {
 
-    StationEntity save(Station station);
+    StationEntity save(StationDto stationDto);
 
     Optional<StationEntity> findByName(String name);
 

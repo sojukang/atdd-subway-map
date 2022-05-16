@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import wooteco.subway.dao.entity.LineEntity;
+import wooteco.subway.service.dto.LineUpdateDto;
 
 public interface LineDao {
 
@@ -15,7 +16,7 @@ public interface LineDao {
 
     List<LineEntity> findAll();
 
-    void update(LineEntity lineEntity);
+    void update(LineUpdateDto lineUpdateDto);
 
     int deleteById(Long id);
 }

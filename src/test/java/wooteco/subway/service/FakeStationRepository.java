@@ -9,6 +9,7 @@ import wooteco.subway.dao.StationRepository;
 import wooteco.subway.dao.entity.StationEntity;
 import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataNotFoundException;
+import wooteco.subway.service.dto.StationDto;
 
 public class FakeStationRepository implements StationRepository {
 
@@ -38,8 +39,8 @@ public class FakeStationRepository implements StationRepository {
     }
 
     @Override
-    public Station save(Station station) {
-        return toStation(stationDao.save(station));
+    public Station save(StationDto stationDto) {
+        return toStation(stationDao.save(stationDto));
     }
 
     @Override

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import wooteco.subway.dao.LineRepository;
-import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
 import wooteco.subway.exception.DataDuplicationException;
 import wooteco.subway.exception.DataNotFoundException;
 import wooteco.subway.service.dto.LineDto;
+import wooteco.subway.service.dto.LineUpdateDto;
 import wooteco.subway.service.dto.SectionDto;
 
 @Service
@@ -50,12 +50,12 @@ public class LineService {
         return lineRepository.findById(id);
     }
 
-    public void update(LineEntity lineEntity) {
-        Optional<Line> foundLine = lineRepository.findByName(lineEntity.getName());
-        if (foundLine.isPresent() && !lineEntity.getId().equals(foundLine.get().getId())) {
+    public void update(LineUpdateDto lineUpdateDto) {
+        Optional<Line> foundLine = lineRepository.findByName(lineUpdateDto.getName());
+        if (foundLine.isPresent() && !lineUpdateDto.getId().equals(foundLine.get().getId())) {
             throw new DataDuplicationException("이미 등록된 노선입니다.");
         }
-        lineRepository.update(lineEntity);
+        lineRepository.update(lineUpdateDto);
     }
 
     public void deleteById(Long id) {

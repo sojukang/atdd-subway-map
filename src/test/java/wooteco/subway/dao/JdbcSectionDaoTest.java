@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.dao.entity.SectionEntity;
-import wooteco.subway.domain.Station;
+import wooteco.subway.service.dto.StationDto;
 
 @JdbcTest
 class JdbcSectionDaoTest {
@@ -33,8 +33,8 @@ class JdbcSectionDaoTest {
         LineDao lineDao = new JdbcLineDao(jdbcTemplate);
         stationDao = new JdbcStationDao(jdbcTemplate);
 
-        stationIdA = stationDao.save(new Station("강남역")).getId();
-        stationIdB = stationDao.save(new Station("선릉역")).getId();
+        stationIdA = stationDao.save(new StationDto("강남역")).getId();
+        stationIdB = stationDao.save(new StationDto("선릉역")).getId();
 
         savedLineId = lineDao.save(new LineEntity("2호선", "green")).getId();
     }
@@ -73,7 +73,7 @@ class JdbcSectionDaoTest {
     @DisplayName("노선 id 로 구간을 조회한다.")
     void findByLineId() {
         //given
-        Long stationIdC = stationDao.save(new Station("서초역")).getId();
+        Long stationIdC = stationDao.save(new StationDto("서초역")).getId();
 
         Long sectionIdA = sectionDao.save(new SectionEntity(savedLineId, stationIdA, stationIdB, 5));
         Long sectionIdB = sectionDao.save(new SectionEntity(savedLineId, stationIdB, stationIdC, 5));
@@ -91,7 +91,7 @@ class JdbcSectionDaoTest {
     @DisplayName("구간 정보를 수정한다.")
     void update() {
         //given
-        Long stationIdC = stationDao.save(new Station("서초역")).getId();
+        Long stationIdC = stationDao.save(new StationDto("서초역")).getId();
 
         Long sectionId = sectionDao.save(new SectionEntity(savedLineId, stationIdA, stationIdB, 5));
 

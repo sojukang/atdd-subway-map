@@ -1,6 +1,6 @@
 package wooteco.subway.ui.request;
 
-import wooteco.subway.domain.Station;
+import wooteco.subway.service.dto.StationDto;
 
 public class StationRequest {
 
@@ -13,11 +13,11 @@ public class StationRequest {
         this.name = name;
     }
 
-    public Station toEntity() {
-        return new Station(name);
-    }
-
     public String getName() {
         return name;
+    }
+
+    public StationDto toStationDto() {
+        return new StationDto(name);
     }
 }

@@ -16,8 +16,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.dao.entity.SectionEntity;
 import wooteco.subway.dao.entity.StationEntity;
-import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataReferenceViolationException;
+import wooteco.subway.service.dto.StationDto;
 
 @JdbcTest
 class JdbcStationDaoTest {
@@ -35,7 +35,7 @@ class JdbcStationDaoTest {
     @DisplayName("Station 을 저장한다.")
     void save() {
         //given
-        Station station = new Station("lala");
+        StationDto station = new StationDto("lala");
 
         //when
         StationEntity actual = stationDao.save(station);
@@ -48,8 +48,8 @@ class JdbcStationDaoTest {
     @DisplayName("모든 Station 을 조회한다.")
     void findAll() {
         //given
-        Station station1 = new Station("lala");
-        Station station2 = new Station("sojukang");
+        StationDto station1 = new StationDto("lala");
+        StationDto station2 = new StationDto("sojukang");
         stationDao.save(station1);
         stationDao.save(station2);
 
@@ -68,7 +68,7 @@ class JdbcStationDaoTest {
     void findByName() {
         //given
         String name = "lala";
-        stationDao.save(new Station(name));
+        stationDao.save(new StationDto(name));
 
         //when
         StationEntity actual = stationDao.findByName(name).get();
@@ -82,7 +82,7 @@ class JdbcStationDaoTest {
     void findByNameNotExists() {
         //given
         String name = "lala";
-        stationDao.save(new Station(name));
+        stationDao.save(new StationDto(name));
 
         //when
         Optional<StationEntity> actual = stationDao.findByName("sojukang");
@@ -95,7 +95,7 @@ class JdbcStationDaoTest {
     @DisplayName("id 로 station 을 조회한다.")
     void findById() {
         //given
-        StationEntity station = stationDao.save(new Station("lala"));
+        StationEntity station = stationDao.save(new StationDto("lala"));
 
         //when
         StationEntity actual = stationDao.findById(station.getId()).get();
@@ -108,8 +108,8 @@ class JdbcStationDaoTest {
     @DisplayName("두 id 로 두 station 을 조회한다.")
     void findStationsByIds() {
         //given
-        StationEntity stationA = stationDao.save(new Station("lala"));
-        StationEntity stationB = stationDao.save(new Station("sojukang"));
+        StationEntity stationA = stationDao.save(new StationDto("lala"));
+        StationEntity stationB = stationDao.save(new StationDto("sojukang"));
 
         //when
         List<StationEntity> actual = stationDao.findStationsByIds(stationA.getId(), stationB.getId());
@@ -126,7 +126,7 @@ class JdbcStationDaoTest {
     void deleteById() {
         //given
         String name = "lala";
-        StationEntity savedStation = stationDao.save(new Station(name));
+        StationEntity savedStation = stationDao.save(new StationDto(name));
 
         //when
         stationDao.deleteById(savedStation.getId());
@@ -149,12 +149,12 @@ class JdbcStationDaoTest {
     @DisplayName("특정 구간에 속한 역을 삭제하려 할 경우 예외를 던진다.")
     void deleteStationInSectionException() {
         //given
-        Long stationIdA = stationDao.save(new Station("강남역")).getId();
-        Long stationIdB = stationDao.save(new Station("선릉역")).getId();
+        Long stationIdA = stationDao.save(new StationDto("강남역")).getId();
+        Long stationIdB = stationDao.save(new StationDto("선릉역")).getId();
 
         Long savedLineId = new JdbcLineDao(jdbcTemplate).save(new LineEntity("2호선", "green")).getId();
 
-        Long stationIdC = stationDao.save(new Station("서초역")).getId();
+        Long stationIdC = stationDao.save(new StationDto("서초역")).getId();
 
         SectionDao sectionDao = new JdbcSectionDao(jdbcTemplate);
 

@@ -15,8 +15,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import wooteco.subway.dao.entity.StationEntity;
-import wooteco.subway.domain.Station;
 import wooteco.subway.exception.DataReferenceViolationException;
+import wooteco.subway.service.dto.StationDto;
 
 @Repository
 public class JdbcStationDao implements StationDao {
@@ -28,17 +28,17 @@ public class JdbcStationDao implements StationDao {
     }
 
     @Override
-    public StationEntity save(Station station) {
+    public StationEntity save(StationDto stationDto) {
         String sql = "insert into station (name) values (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
-            ps.setString(1, station.getName());
+            ps.setString(1, stationDto.getName());
             return ps;
         }, keyHolder);
 
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        return new StationEntity(id, station.getName());
+        return new StationEntity(id, stationDto.getName());
     }
 
     @Override

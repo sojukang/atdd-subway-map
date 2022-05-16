@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import wooteco.subway.dao.StationDao;
 import wooteco.subway.dao.entity.StationEntity;
-import wooteco.subway.domain.Station;
+import wooteco.subway.service.dto.StationDto;
 
 class FakeStationDao implements StationDao {
 
@@ -15,14 +15,14 @@ class FakeStationDao implements StationDao {
     private Long seq = 0L;
 
     @Override
-    public StationEntity save(Station station) {
-        StationEntity persistStation = createNewObject(station);
+    public StationEntity save(StationDto stationDto) {
+        StationEntity persistStation = createNewObject(stationDto);
         stations.add(persistStation);
         return persistStation;
     }
 
-    private StationEntity createNewObject(Station station) {
-        return new StationEntity(++seq, station.getName());
+    private StationEntity createNewObject(StationDto stationDto) {
+        return new StationEntity(++seq, stationDto.getName());
     }
 
     @Override

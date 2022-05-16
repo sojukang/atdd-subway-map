@@ -10,6 +10,7 @@ import wooteco.subway.dao.entity.LineEntity;
 import wooteco.subway.domain.Line;
 import wooteco.subway.exception.DataNotFoundException;
 import wooteco.subway.service.dto.LineDto;
+import wooteco.subway.service.dto.LineUpdateDto;
 
 public class FakeLineRepository implements LineRepository {
 
@@ -25,8 +26,8 @@ public class FakeLineRepository implements LineRepository {
     }
 
     @Override
-    public void update(LineEntity lineEntity) {
-        lineDao.update(lineEntity);
+    public void update(LineUpdateDto lineUpdateDto) {
+        lineDao.update(lineUpdateDto);
     }
 
     @Override

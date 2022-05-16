@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import wooteco.subway.dao.entity.LineEntity;
+import wooteco.subway.service.dto.LineUpdateDto;
 
 @Repository
 public class JdbcLineDao implements LineDao {
@@ -80,9 +81,9 @@ public class JdbcLineDao implements LineDao {
     }
 
     @Override
-    public void update(LineEntity lineEntity) {
+    public void update(LineUpdateDto lineUpdateDto) {
         String sql = "update line set name = ?, color = ? where id = ?";
-        jdbcTemplate.update(sql, lineEntity.getName(), lineEntity.getColor(), lineEntity.getId());
+        jdbcTemplate.update(sql, lineUpdateDto.getName(), lineUpdateDto.getColor(), lineUpdateDto.getId());
     }
 
     @Override
